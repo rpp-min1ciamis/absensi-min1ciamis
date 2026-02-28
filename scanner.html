@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Absensi QR MIN 1 Ciamis</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body>
+<h2>Scan QR Absensi</h2>
+<div id="reader" style="width:300px;"></div>
+
+<script>
+const apiURL = "https://script.google.com/macros/s/AKfycbwYtjdtGU_2bvyic-YyiHfWuEZmMqUIFiRVi2cu5aesnInPy7_si9HGUPGDRHVYwwo3Zw/exec";
+
+function onScanSuccess(decodedText) {
+
+    const data = {
+        nama: decodedText,
+        kelas: "VI A",
+        kode: decodedText
+    };
+
+    fetch(apiURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert("Absensi Berhasil ✅");
+    })
+    .catch(error => {
+        alert("Gagal kirim data ❌");
+    });
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 });
+
+html5QrcodeScanner.render(onScanSuccess);
+</script>
+
+</body>
+</html>

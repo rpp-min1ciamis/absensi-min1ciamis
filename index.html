@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Absensi QR MIN 1 Ciamis</title>
-<script src="https://unpkg.com/html5-qrcode"></script>
-</head>
-
-<body>
-<h2>Scan QR Absensi</h2>
-<div id="reader" style="width:300px;"></div>
-
 <script>
-const apiURL = "https://script.google.com/macros/s/AKfycbwYtjdtGU_2bvyic-YyiHfWuEZmMqUIFiRVi2cu5aesnInPy7_si9HGUPGDRHVYwwo3Zw/exec";
+const apiURL = "https://script.google.com/macros/s/AKfycbwV4MHx9sC86b2FHQT88YTANoQe4bicExqRJUz9uQBf4V_6yRBQbKAlURHpp1JHDZk_/exec";
 
 function onScanSuccess(decodedText) {
 
@@ -34,11 +22,20 @@ function onScanSuccess(decodedText) {
     });
 }
 
-let html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader", { fps: 10, qrbox: 250 });
+const html5QrCode = new Html5Qrcode("reader");
 
-html5QrcodeScanner.render(onScanSuccess);
+Html5Qrcode.getCameras().then(devices => {
+    if (devices && devices.length) {
+        html5QrCode.start(
+            devices[0].id,
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            onScanSuccess
+        );
+    }
+}).catch(err => {
+    alert("Gagal akses kamera: " + err);
+});
 </script>
-
-</body>
-</html>
